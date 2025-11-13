@@ -28,6 +28,7 @@ print(run_args)
 os.makedirs(run_args.data_save_folder,exist_ok=True)
 link_config = BasicConfig(num_bs_ant=run_args.num_bs_ant)
 
+
 # ----------------------- Generate data for evaluation ----------------------- #
 link_config.set_channel_models(model_type = "TDL",PDP_mode="A", delay_spread=50e-9, min_speed=0,max_speed=0,delta_delay_spread=0)
 generator = DataGenerator(init_config = link_config, # set 'add_interference = True' in this config 

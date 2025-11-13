@@ -7,7 +7,7 @@ import numpy as np
 from Data.get_config import BasicConfig
 from Utils.functions import log_print, flatten_model
 from itertools import chain
-import wandb
+# import wandb
 from sionna.utils import expand_to_rank, complex_normal
 
 
@@ -303,7 +303,7 @@ class TrainEntireMainNet:
         Client local training with or without the penalty term
         penalty = 0: no penalty term
         penalty = 1: model cosine similarity as the penalty term
-        penalty = 2: normalized mdoel cosine similarity as the penalty term
+        penalty = 2: normalized model cosine similarity as the penalty term
         penalty = 3: normalized "model update" (compared to the initial model) cosine similarity as the penalty term
         '''
         batch_loss_list = list()

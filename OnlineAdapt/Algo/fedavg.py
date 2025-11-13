@@ -1,3 +1,34 @@
+'''
+Federated Learning Algorithms for Wireless Communication Neural Receivers
+
+This script implements four federated learning algorithms for training neural receivers
+in wireless communication systems with non-IID data distribution across clients:
+
+SUPPORTED ALGORITHMS:
+1. FedAvgs - Federated Averaging (standard federated learning)
+2. FedAvgFT - Federated Averaging with Fine-Tuning (personalization via local fine-tuning)
+3. FedReps - Federated Representation Learning (split representation and head layers)
+4. Dittos - Ditto algorithm (personalized models with regularization)
+
+USAGE EXAMPLES:
+- FedAvgs:   python fedavg.py --fed_alg FedAvgs --num_rounds 30 --num_epochs 1
+- FedAvgFT:  python fedavg.py --fed_alg FedAvgFT --FT 1 --FT_num_epochs 5 --load_fedavg_path <path>
+- FedReps:   python fedavg.py --fed_alg FedReps --num_epochs_for_head 2 --num_epochs_for_rep 2
+- Dittos:    python fedavg.py --fed_alg Dittos --local_iter 15 --lam 0.1 --local_lr 3e-3
+
+KEY PARAMETERS:
+- --fed_alg: Choose algorithm from ["FedAvgs", "FedAvgFT", "FedReps", "Dittos"]
+- --SIR_pattern: Signal interference pattern ["NoneSIR", "HighSIR"]
+- --client_data_dist_type: Data distribution type (0-5, controls non-IID level)
+- --use_coreset: Enable coreset selection (0/1) for efficient training
+- --apply_aug: Enable data augmentation (0/1) with --aug_times parameter
+
+OUTPUT:
+- Trained models saved in OnlineAdapt/<algorithm>/<SIR_pattern>/AdaptedModels_*
+- Training metrics logged to Weights & Biases (wandb) unless --debug 1
+- Global models (FedAvgs) or local models (others) saved based on algorithm
+'''
+
 print("Successfully in the fedavg.py file")
 # -*- coding: utf-8 -*-
 import pickle
@@ -69,7 +100,6 @@ parser.add_argument("--FT_num_epochs", type=int, default=1, required=False)
 parser.add_argument("--FT", type=int, default=0, required=False)
 # TODO: change the path for FedAvg-FT...
 parser.add_argument("--load_fedavg_path", type=str, default=root_path + "/OnlineAdapt/FedAvgs/AdaptedModels_EXP0/Global/glob_para_round_29.pkl", required=False)
-
 parser.add_argument("--debug", type=int, default=0, required=False)
 run_args = parser.parse_args()
 

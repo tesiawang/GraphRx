@@ -68,10 +68,33 @@ def cal_model_diff(client_updated_model_para, initial_para, dist_metric):
 
 def update_graph_matrix_directed(graph_matrix, model_diff_mat, client_ids, alpha, opt_objective, hyper_c, p):
     '''
-    Information on "alpha": a hyper parameter which is equal to 'lamba' in the source codes of pFedGraph
-    In our method: the hyper-parameter is hyper_c, while alpha is not used.
-
-    "p" is the quantity distribution vector, e.g., p = [1/6,..., 1/6]
+    Update Collaboration Graph Matrix - Supporting pFedGraph and GraphRx Algorithms
+    =============================================================================
+    
+    This function implements the core graph learning mechanism that differentiates 
+    pFedGraph and GraphRx algorithms through different optimization objectives.
+    
+    Algorithm Selection via opt_objective:
+    ------------------------------------
+    opt_objective=0 (pFedGraph):
+        - Original pFedGraph objective: minimize x^T P x + q^T x  
+        - P = alpha * I (quadratic regularization based on data quantity)
+        - q = d - 2*alpha*p (incorporates client data distribution)
+        
+    opt_objective=1 (GraphRx - Our Method):
+        - Domain adaptation inspired objective: minimize ||x'||_2 * c + d^T x
+        - x' = x ./ sqrt(p) (element-wise division by sqrt of data quantity)  
+        - Uses L2 norm regularization aligned with domain adaptation theory
+        - More theoretically grounded generalization error bound
+    
+    Parameters:
+    ----------
+    alpha : float
+        Regularization parameter for pFedGraph (opt_objective=0). Not used in GraphRx.
+    hyper_c : float  
+        Collaboration regularization parameter for GraphRx (opt_objective=1)
+    p : array
+        Data quantity distribution vector, e.g., p = [1/6, 1/6, ..., 1/6]
     ''' 
     n = model_diff_mat.shape[0]
     sqrt_p = np.sqrt(p)

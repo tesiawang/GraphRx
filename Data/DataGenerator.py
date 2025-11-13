@@ -24,7 +24,7 @@ class DataGenerator:
     def reset_snr_range(self, min_ebno: float, max_ebno:float, num_ebno_point: int) -> None: # for generating data per snr point
         self._ebNo_dB_range = np.linspace(min_ebno, max_ebno, num_ebno_point)
 
-    @tf.function
+    @tf.function(reduce_retracing=True)
     def _receive_data(self,
                       ebno_db,
                       SIR_db,
@@ -122,8 +122,8 @@ class DataGenerator:
         for _ in range(num_batch):
             # start = time.time()
             # set one SNR point for a batch of data!!!
-            ebno_db = float(np.random.choice(self._ebNo_dB_range, 1)) # randomly choose an SNR value
-            SIR_db = float(np.random.choice(self._SIR_db_range, 1)) # randomly choose an SIR value
+            ebno_db = tf.constant(float(np.random.choice(self._ebNo_dB_range, 1)), dtype=tf.float32) # randomly choose an SNR value
+            SIR_db = tf.constant(float(np.random.choice(self._SIR_db_range, 1)), dtype=tf.float32) # randomly choose an SIR value
             batch_pilots_rg, batch_y_with_interf, batch_N0, tx_codeword_bits, batch_h_freq, interf_batch_y, b = self._receive_data(ebno_db=ebno_db,
                                                                                                                                   SIR_db = SIR_db,
                                                                                                                                   batch_size=batch_size)

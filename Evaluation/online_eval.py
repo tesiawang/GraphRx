@@ -52,13 +52,13 @@ print(run_args)
 
 
 if __name__ == "__main__":
-    import wandb
-    wandb.login()
+    # import wandb
+    # wandb.login()
 
     # ----------------------------- set wandb config ----------------------------- #
-    wandb_config = {**vars(run_args)} 
-    run = wandb.init(project='Infocom2025', config=wandb_config, 
-                        name = "OnlineEval_Dist{:d}_{}_{}".format(run_args.client_data_dist_type, run_args.test,run_args.fl_method))
+    # wandb_config = {**vars(run_args)} 
+    # run = wandb.init(project='Infocom2025', config=wandb_config, 
+    #                     name = "OnlineEval_Dist{:d}_{}_{}".format(run_args.client_data_dist_type, run_args.test,run_args.fl_method))
 
     # set random seed
     tf.random.set_seed(run_args.seed)
@@ -197,4 +197,4 @@ if __name__ == "__main__":
             print('Ideal Detection, Client {:d}, BER {}'.format(client_id, ber))
 
     # ---------------------------------------------------------------------------- #
-    run.finish()
+    # run.finish()

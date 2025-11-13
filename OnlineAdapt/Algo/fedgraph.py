@@ -1,3 +1,38 @@
+'''
+FedGraph Implementation Supporting Multiple Algorithms
+======================================================
+
+This module implements a unified federated learning framework that supports two algorithms:
+
+1. **pFedGraph** (Baseline): 
+   - Uses original objective function considering data quantity
+   - Configured with: opt_objective=0, penalty >= 1
+   - Reference: Original pFedGraph paper implementation
+
+2. **GraphRx** (Our Method):
+   - Uses generalization error bound with square root alignment to domain adaptation theory  
+   - Configured with: opt_objective=1, penalty=0 (no penalty term required)
+   - Our proposed improvement over pFedGraph
+
+Key Algorithmic Differences:
+---------------------------
+- **Graph Learning Objective**: The main difference lies in `update_graph_matrix_directed()`:
+  * opt_objective=0: pFedGraph's original quadratic form objective
+  * opt_objective=1: GraphRx's domain adaptation inspired objective with ||x'||_2 * c + d^T @ x
+
+- **Penalty Terms**: In local training via `train_graph()`:
+  * pFedGraph: Requires penalty terms (penalty=1,2,3) for regularization
+  * GraphRx: Does not require penalty terms (penalty=0), simpler and more effective
+
+Usage Examples:
+--------------
+# Run GraphRx (our method)
+python fedgraph.py --opt_objective 1 --penalty 0 --hyper_c 0.6
+
+# Run pFedGraph (baseline)  
+python fedgraph.py --opt_objective 0 --penalty 1 --alpha 0.8
+'''
+
 import pickle
 import numpy as np
 from pathlib import Path
@@ -9,8 +44,8 @@ import sys
 import shutil
 import time
 import random
-import wandb
-wandb.login()
+# import wandb
+# wandb.login()
 
 import tensorflow as tf
 tf.get_logger().setLevel('ERROR')
@@ -46,7 +81,7 @@ parser.add_argument("--penalty", type=int, default=0, required=False)
 parser.add_argument("--local_iter", type=int, default=3, required=False) 
 # NOTE : we define local_iter for the client with the smallest data quantity; 
 # for other clients: local_iter = local_iter * data_quantity_ratio_compared_to_the_smallest
-parser.add_argument("--SIR_pattern", type=str, default="HighSIR", required=False) # choose from "NoneSIR", "HighSIR"
+parser.add_argument("--SIR_pattern", type=str, default="NoneSIR", required=False) # choose from "NoneSIR", "HighSIR"
 parser.add_argument("--lam", type=float, default=0.01, required=False) # for local training regularization
 parser.add_argument("--alpha", type=float, default=0.8, required=False) # for optimizing collab graph
 parser.add_argument("--weighted_initial", type=int, default=1, required=False)
@@ -99,9 +134,9 @@ if __name__=='__main__':
             os.makedirs(folder)
 
     # --------------------------- Set config for wandb --------------------------- #
-    wandb_config = {**vars(run_args),**cfg} # one-line code 
-    run = wandb.init(project ="Infocom2025", config=wandb_config, name = "fedgraph-dist{:d}-{:s}-aug{:d}-CS{:d}-{:s}".format(run_args.client_data_dist_type,run_args.dist_metric, 
-                                                                                                                            run_args.aug_times, run_args.use_coreset, run_args.SIR_pattern))
+    # wandb_config = {**vars(run_args),**cfg} # one-line code 
+    # run = wandb.init(project ="Infocom2025", config=wandb_config, name = "fedgraph-dist{:d}-{:s}-aug{:d}-CS{:d}-{:s}".format(run_args.client_data_dist_type,run_args.dist_metric, 
+    #                                                                                                                         run_args.aug_times, run_args.use_coreset, run_args.SIR_pattern))
 
     # link configuration
     link_config = BasicConfig(num_bs_ant=cfg['num_bs_ant'], 
@@ -300,19 +335,19 @@ if __name__=='__main__':
         log_test_loss = {'test_loss_bs' + str(key): value for key, value in test_loss_dict.items()}
         log_test_ber = {'test_ber_bs' + str(key): value for key, value in test_ber_dict.items()}
         
-        wandb.log({'round': i,
-                   'avg_train_loss': avg_train_loss,
-                   'avg_test_loss': avg_test_loss,
-                   'avg_test_ber': avg_test_ber,
-                   **log_test_loss,
-                   **log_test_ber})
+        # wandb.log({'round': i,
+        #            'avg_train_loss': avg_train_loss,
+        #            'avg_test_loss': avg_test_loss,
+        #            'avg_test_ber': avg_test_ber,
+        #            **log_test_loss,
+        #            **log_test_ber})
 
-        wandb.log({'round': i,
-                   'avg_train_loss': avg_train_loss})
+        # wandb.log({'round': i,
+        #            'avg_train_loss': avg_train_loss})
         
         # NOTE: save weighted_model_para
         if (i+1) % run_args.save_model_every == 0:
             save_local_model(model_save_folder,i, weighted_model_para)
    
     # ---------------------------------------------------------------------------- #
-    run.finish()
+    # run.finish()
