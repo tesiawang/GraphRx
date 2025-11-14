@@ -77,14 +77,19 @@ If you find our work useful, please kindly consider citing our papers:
 ```
 
 ```
-**T. Wang**, X. Wang, and G. Y. Li, "T. Wang, X. Wang and G. Y. Li, "GraphRx: Graph-Based Collaborative Learning Among Multiple Cells for Uplink Neural Receivers," IEEE INFOCOM 2025 - IEEE Conference on Computer Communications, London, United Kingdom, 2025, pp. 1-10.
+T. Wang, X. Wang, and G. Y. Li, "T. Wang, X. Wang and G. Y. Li, "GraphRx: Graph-Based Collaborative Learning Among Multiple Cells for Uplink Neural Receivers," IEEE INFOCOM 2025 - IEEE Conference on Computer Communications, London, United Kingdom, 2025, pp. 1-10.
 ```
 
-## Others
-This repository has referred to some parts of codes in [pFedGraph][pFedGraph].
+## Related Work
+Please check out our related work [FedPDA][FedPDA]: Collaborative Learning for Reducing Online-Adaptation Frequency of Neural Receivers, which is published at INFOCOM '25. The open source code can be found at [here][FedPDA-repo].
+
+## Reference
+This repository refers to some parts of codes in [pFedGraph][pFedGraph].
 
 [INFOCOM]: https://ieeexplore.ieee.org/document/11044726
 [MLSP]: https://ieeexplore.ieee.org/abstract/document/10734801
 [conda]: https://www.anaconda.com/docs/getting-started/miniconda/main
 [pFedGraph]: https://github.com/MediaBrain-SJTU/pFedGraph
 [Sionna]: https://jhoydis.github.io/sionna-0.19.2-doc/
+[FedPDA]: https://ieeexplore.ieee.org/document/11044747
+[FedPDA-repo]: https://github.com/tesiawang/FedPDA/tree/main
