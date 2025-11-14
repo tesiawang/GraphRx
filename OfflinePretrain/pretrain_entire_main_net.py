@@ -8,7 +8,7 @@ import sys
 import time
 import shutil
 import wandb
-wandb.login()
+# wandb.login()  # Removed for privacy
 
 # turn off the device INFO messages
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'

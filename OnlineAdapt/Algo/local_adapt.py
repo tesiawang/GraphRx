@@ -51,7 +51,7 @@ print(run_args)
 
 if run_args.debug == 0:
     import wandb
-    wandb.login()
+    # wandb.login()  # Removed for privacy
 
 if __name__=='__main__':
 

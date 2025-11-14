@@ -50,7 +50,7 @@ print(run_args)
 
 if __name__ == "__main__":
     import wandb
-    wandb.login()
+    # wandb.login()  # Removed for privacy
 
     # ----------------------------- set wandb config ----------------------------- #
     wandb_config = {**vars(run_args)} 

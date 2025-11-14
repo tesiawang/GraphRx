@@ -52,7 +52,7 @@ print(run_args)
 '''Ablation Evaluation of various hyper_c for L2 distance metric'''
 if __name__ == "__main__":
     import wandb
-    wandb.login()
+    # wandb.login()  # Removed for privacy
 
     # ----------------------------- set wandb config ----------------------------- #
     wandb_config = {**vars(run_args)} 

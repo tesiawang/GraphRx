@@ -30,7 +30,7 @@ args = parser.parse_args()
 
 if __name__=='__main__':
     import wandb 
-    wandb.login()
+    # wandb.login()  # Removed for privacy
     tf.keras.utils.set_random_seed(args.seed)
     np.random.seed(args.seed)
     _,cfg = get_online_config()

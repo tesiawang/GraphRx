@@ -108,7 +108,7 @@ run_args = parser.parse_args()
 if __name__=='__main__':
     if run_args.debug == 0:
         import wandb
-        wandb.login()
+        # wandb.login()  # Removed for privacy
 
     # ------------------------------ set random seed ----------------------------- #
     tf.keras.utils.set_random_seed(run_args.seed)
